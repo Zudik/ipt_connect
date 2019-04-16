@@ -68,6 +68,14 @@ def iypt_mean(vec):
 def special_mean(vec):
 	return globals()[params.mean](vec)
 
+def ttn_mean(vec):
+    if len(vec) <= 4:
+        return float(sum(vec))/len(vec)
+    else:
+        add_number = float((vec[0]+vec[-1]))/2
+        vec = vec[1:-1]
+        vec.append(add_number)
+        return float(sum(vec))/len(vec)
 
 @deconstructible
 class UploadToPathAndRename(object):
