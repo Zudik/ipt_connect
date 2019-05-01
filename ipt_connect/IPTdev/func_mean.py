@@ -20,13 +20,8 @@ def ipt_mean(vec):
     # There was an unsuccessful attempt to refactor it.
     # The code should be refactored and tested.
 
-
-    if round(nreject / 2.0) == nreject / 2.0:
-        nlow = int(nreject / 2.0)
-        nhigh = int(nlow)
-    else:
-        nlow = int(nreject / 2.0 + 0.5)
-        nhigh = int(nreject / 2.0 - 0.5)
+    nhigh = nreject / 2
+    nlow = nreject - nhigh
 
     if nhigh == 0:
         vec = vec[nlow : ]
