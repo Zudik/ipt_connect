@@ -282,4 +282,3 @@ class  Test(TestCase):
         ]
         for inp, res in zip(input_data, res_data):
             self.assertEqual(mean(inp), res)
-            
