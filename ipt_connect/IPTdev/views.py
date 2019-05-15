@@ -1,5 +1,5 @@
 # coding: utf8
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import render
 from django.views.decorators.cache import cache_page
 from models import *
@@ -9,7 +9,6 @@ from django.utils.translation import get_language
 from forms import UploadForm
 import csv
 import parameters as params
-
 
 def home(request):
 
@@ -103,7 +102,10 @@ def participants_all(request):
 @user_passes_test(ninja_test, redirect_field_name=None, login_url='/IPT%s/soon' % params.app_version)
 @cache_page(cache_duration)
 def participant_detail(request, pk):
-	participant = Participant.objects.get(pk=pk)
+	try:
+		participant = Participant.objects.get(pk=pk)
+	except:
+		raise Http404()
 
 	rounds = (Round.objects.filter(reporter=participant) | Round.objects.filter(reporter_2=participant) | Round.objects.filter(opponent=participant) | Round.objects.filter(reviewer=participant)).order_by('pf_number', 'round_number')
 
@@ -150,7 +152,11 @@ def jurys_overview(request):
 @user_passes_test(ninja_test, redirect_field_name=None, login_url='/IPT%s/soon' % params.app_version)
 @cache_page(cache_duration)
 def jury_detail(request, pk):
-	jury = Jury.objects.get(pk=pk)
+	try:
+		jury = Jury.objects.get(pk=pk)
+	except:
+		raise Http404()
+
 	mygrades = JuryGrade.objects.filter(jury=jury)
 	return render(request, 'IPT%s/jury_detail.html' % params.app_version, {'jury': jury, "grades": mygrades, 'params': params})
 
@@ -169,7 +175,11 @@ def teams_overview(request):
 @user_passes_test(ninja_test, redirect_field_name=None, login_url='/IPT%s/soon' % params.app_version)
 @cache_page(cache_duration)
 def team_detail(request, team_name):
-	team = Team.objects.get(name=team_name)
+	try:
+		team = Team.objects.get(name=team_name)
+	except:
+		raise Http404()
+
 	ranking = Team.objects.order_by('-total_points')
 	for i,t in enumerate(ranking):
 		if t == team:
@@ -238,7 +248,11 @@ def problems_overview(request):
 @user_passes_test(ninja_test, redirect_field_name=None, login_url='/IPT%s/soon' % params.app_version)
 @cache_page(cache_duration)
 def problem_detail(request, pk):
-	problem = Problem.objects.get(pk=pk)
+	try:
+		problem = Problem.objects.get(pk=pk)
+	except:
+		raise Http404()
+
 	(meangrades, teamresults) = problem.status(verbose=False)
 
 	return render(request, 'IPT%s/problem_detail.html' % params.app_version, {'problem': problem, "meangrades": meangrades, "teamresults": teamresults, 'params': params})
@@ -299,7 +313,10 @@ def rounds(request):
 @user_passes_test(ninja_test, redirect_field_name=None, login_url='/IPT%s/soon' % params.app_version)
 @cache_page(cache_duration)
 def round_detail(request, pk):
-	round = Round.objects.get(pk=pk)
+	try:
+		round = Round.objects.get(pk=pk)
+	except:
+		raise Http404()
 
 	jurygrades = JuryGrade.objects.filter(round=round).order_by('jury__name')
 	meangrades = []
@@ -345,6 +362,8 @@ def round_detail(request, pk):
 @cache_page(cache_duration)
 def physics_fight_detail(request, pfid):
 	rounds = Round.objects.filter(pf_number=pfid)
+	if len(rounds) == 0:
+		raise Http404()
 	rooms = Room.objects.all().order_by('name')
 
 	roomgrades = []
