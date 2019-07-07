@@ -104,3 +104,24 @@ Just create the instance locally and look at the commits which wil be created.
 
 Notice: this clones only structure of the tournament,
 i.e. you have an empty table for teams, no registered jurors, etc.
+
+### How to see modifications in html code after new commit?
+
+Sometimes change in backend code of product can affect on frontend part.
+We'll see, have affected on pages?
+
+Dumper - utility for collect all pages
+
+* Install the requirements `pip install -r requirements.txt`
+
+* To do dump:
+  * Run `python manage.py runserver` 
+  * Run `cd IPTdev/utils`
+  * Run `python dumper`
+In terminal you will see path to dump
+
+* Compare dumps:
+  * Run `cd IPTdev/utils`
+  * Run `python diff_html.py hash_commit_1 hash_commit_2`
+  (Do not need to run server) 
+In terminal you will see path to difference 
