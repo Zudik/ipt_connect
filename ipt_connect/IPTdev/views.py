@@ -257,6 +257,7 @@ def rounds(request):
 		orderedroundsperroom.append(thisroom)
 
 	render_data = {
+		'rounds': rounds,
 		'params': params,
 		'orderedroundsperroom': orderedroundsperroom,
 		'selective_fight_names': zip(selective_fights,params.fights['names'][:params.npf]),
