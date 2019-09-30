@@ -475,7 +475,6 @@ def ranking(request):
 @cache_page(cache_duration)
 def poolranking(request):
 
-	pools_status = params.enable_pools
 	# Pool A
 	rankteamsA = create_ranking(Team.objects.filter(pool="A").order_by('-total_points'))
 
@@ -489,7 +488,6 @@ def poolranking(request):
 		'rankteamsA': rankteamsA,
 		'rankteamsB': rankteamsB,
 		'semirankteams': semirankteams,
-		'pools': pools_status,
 	})
 
 

@@ -3,7 +3,7 @@
 {% load i18n %}
 
 {% block content %}
-  {% if not pools %}
+  {% if not params.enable_pools %}
     <div>
       <center>
       <h1>{% trans 'No pools are forms yet' %}</h1>
